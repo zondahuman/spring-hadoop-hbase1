@@ -73,12 +73,12 @@
 
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>spring-milestone</id>
-            <url>http://repo.springsource.org/libs-milestone</url>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--<repository>-->
+            <!--<id>spring-milestone</id>-->
+            <!--<url>http://repo.springsource.org/libs-milestone</url>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
     <build>
         <plugins>
