@@ -20,9 +20,15 @@ wget https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar
 http://172.16.2.134:17240
 
 
+# Hadoop Monitor:
+http://172.16.2.134:50070/
 
 
+# Linux Hadoop2.7.3 安装(单机模式) 一 :
+https://www.cnblogs.com/woxpp/p/6248370.html
 
+# Linux Hadoop2.7.3 安装(单机模式) 一 :
+https://www.cnblogs.com/woxpp/p/6248370.html
 
 
 
