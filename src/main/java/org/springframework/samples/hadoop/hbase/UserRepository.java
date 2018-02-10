@@ -44,9 +44,9 @@ public class UserRepository {
 			public User doInTable(HTableInterface table) throws Throwable {
 				User user = new User(userName, email, password);
 				Put p = new Put(Bytes.toBytes(user.getName()));
-				p.add(CF_INFO, qUser, Bytes.toBytes(user.getName()));
-				p.add(CF_INFO, qEmail, Bytes.toBytes(user.getEmail()));
-				p.add(CF_INFO, qPassword, Bytes.toBytes(user.getPassword()));
+				p.addColumn(CF_INFO, qUser, Bytes.toBytes(user.getName()));
+				p.addColumn(CF_INFO, qEmail, Bytes.toBytes(user.getEmail()));
+				p.addColumn(CF_INFO, qPassword, Bytes.toBytes(user.getPassword()));
 				table.put(p);
 				return user;
 				
