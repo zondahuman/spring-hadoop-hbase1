@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>spring-hadoop-hbase1</artifactId>
+        <groupId>com.abin.lee</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>spring-data-hadoop-hbase</artifactId>
+
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.hadoop.version>2.2.0.RELEASE</spring.hadoop.version>
+        <hadoop.version>2.6.0</hadoop.version>
+        <spring.version>4.1.6.RELEASE</spring.version>
+        <hbase.client.version>1.4.1</hbase.client.version>
+        <jdk.version>1.8</jdk.version>
+        <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-hadoop-boot -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-hadoop-boot</artifactId>
+            <version>2.5.0.RELEASE</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-client</artifactId>
+            <version>${hbase.client.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-hadoop-hbase -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-hadoop-hbase</artifactId>
+            <version>2.5.0.RELEASE</version>
+        </dependency>
+
+
+    </dependencies>
+
+
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                <configuration>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <configurationSourceDirectory>src/main/config</configurationSourceDirectory>
+                    <copyConfigurationDirectory>true</copyConfigurationDirectory>
+                    <programs>
+                        <program>
+                            <mainClass>org.springframework.samples.hadoop.hbase.UserApp</mainClass>
+                            <name>usercount</name>
+                        </program>
+                    </programs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>package</id>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+
+
+
+
+
+</project>
