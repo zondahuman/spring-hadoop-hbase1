@@ -67,7 +67,7 @@ public class UserRepository {
         });
     }
 
-    public List<User> findBy(User user) {
+    public List<User> findByParam(User user) {
         List<User> list = Lists.newArrayList();
         // read each row from 'MyTable'
         List<String> rows = hbaseTemplate.find("MyTable", "name",

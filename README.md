@@ -39,4 +39,6 @@ https://www.cnblogs.com/woxpp/p/6248370.html
 * 数据仓库
 
 
-
+# 数据迁移
+sqoop
+http://blog.csdn.net/sl1992/article/details/53521819
