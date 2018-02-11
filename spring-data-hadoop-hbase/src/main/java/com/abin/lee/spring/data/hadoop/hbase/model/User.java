@@ -1,5 +1,7 @@
 package com.abin.lee.spring.data.hadoop.hbase.model;
 
+import lombok.*;
+
 import java.io.Serializable;
 
 /**
@@ -7,39 +9,17 @@ import java.io.Serializable;
  * spring-hadoop-hbase1
  * com.abin.lee.spring.data.hadoop.hbase
  */
+@Setter
+@Getter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements Serializable{
 
     private String name;
     private String email;
     private String password;
-
-    public User() {
-    }
-
-    public User(String name, String email, String password) {
-        super();
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String toString() {
-        return "User [name=" + name + ", email=" + email + ", password="
-                + password + "]";
-    }
+    
 
 
 }

@@ -1,4 +1,3 @@
-
 package com.abin.lee.spring.data.hadoop.hbase.test;
 
 import com.abin.lee.spring.data.hadoop.hbase.util.HttpClientUtil;
@@ -22,7 +21,7 @@ import java.util.List;
  * com.abin.lee.elasticsearch.svr.api.test
  */
 public class HbaseAddTest {
-    private static final String httpMapURL = "http://localhost:8099/user/add";
+    private static final String httpURL = "http://localhost:8099/user/add";
 
     @Test
     public void testHbaseAdd() {
@@ -30,11 +29,11 @@ public class HbaseAddTest {
             CloseableHttpClient httpClient = HttpClientUtil.getHttpClient();
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             String id = (int) (Math.random() * 1000000) + "";
-            nvps.add(new BasicNameValuePair("name", id));
-            nvps.add(new BasicNameValuePair("email", RandomStringUtils.random(5) + "@gmail.com"));
-            nvps.add(new BasicNameValuePair("password", RandomStringUtils.random(5)));
+            nvps.add(new BasicNameValuePair("name", "abin"+id));
+            nvps.add(new BasicNameValuePair("email", RandomStringUtils.randomAlphabetic(5) + "@gmail.com"));
+            nvps.add(new BasicNameValuePair("password", RandomStringUtils.randomAlphabetic(5)));
 
-            HttpPost httpPost = new HttpPost(httpMapURL);
+            HttpPost httpPost = new HttpPost(httpURL);
 
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
             System.out.println("Executing request: " + httpPost.getRequestLine());

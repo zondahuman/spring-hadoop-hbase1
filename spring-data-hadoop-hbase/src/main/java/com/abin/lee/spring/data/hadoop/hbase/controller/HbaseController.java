@@ -2,12 +2,10 @@ package com.abin.lee.spring.data.hadoop.hbase.controller;
 
 import com.abin.lee.spring.data.hadoop.hbase.model.User;
 import com.abin.lee.spring.data.hadoop.hbase.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,7 +14,8 @@ import java.util.List;
  * spring-hadoop-hbase1
  * com.abin.lee.spring.data.hadoop.hbase.controller
  */
-@Controller
+@Slf4j
+@RestController
 @RequestMapping("/user")
 public class HbaseController {
 
