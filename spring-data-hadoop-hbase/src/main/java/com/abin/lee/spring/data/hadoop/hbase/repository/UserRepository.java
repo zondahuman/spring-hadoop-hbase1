@@ -3,6 +3,7 @@ package com.abin.lee.spring.data.hadoop.hbase.repository;
 import java.util.List;
 
 import com.abin.lee.spring.data.hadoop.hbase.model.User;
+import com.google.common.collect.Lists;
 import org.apache.hadoop.hbase.client.HTableInterface;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -62,6 +63,26 @@ public class UserRepository {
             }
         });
     }
+
+    public List<User> findBy(User user) {
+        List<User> list = Lists.newArrayList();
+        // read each row from 'MyTable'
+        List<String> rows = hbaseTemplate.find("MyTable", "name",
+                new RowMapper<String>() {
+                    @Override
+                    public String mapRow(Result result, int rowNum)
+                            throws Exception {
+                        return result.toString();
+                    }
+                });
+        for (String row : rows) {
+            System.out.println("Printing row:" + row);
+        }
+
+    }
+
+
+
 
 }
 
