@@ -8,8 +8,8 @@ import org.springframework.context.annotation.ImportResource;
  * spring-hadoop-hbase1
  * com.abin.lee.spring.data.hadoop.hbase.config
  */
-@Configuration
-@ImportResource(value={"classpath:application-context.xml"})
+//@Configuration
+//@ImportResource(locations={"classpath:spring/application-context.xml"})
 public class ConfigClass {
 
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -22,9 +23,9 @@ public class HbaseController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public String add(@ModelAttribute User user) {
+    public String add(@ModelAttribute("user") User user) {
         String result = "FAILURE";
         try {
             this.userService.add(user);
