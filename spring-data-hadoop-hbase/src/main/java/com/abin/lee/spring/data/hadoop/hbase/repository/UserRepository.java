@@ -21,6 +21,9 @@ import org.springframework.stereotype.Repository;
  * https://www.programcreek.com/java-api-examples/index.php?api=org.springframework.data.hadoop.hbase.TableCallback
  * https://www.programcreek.com/java-api-examples/?api=org.springframework.data.hadoop.hbase.RowMapper
  * https://www.programcreek.com/java-api-examples/index.php?source_dir=JavaStudy-master/Spring/spring-data-book-master/hadoop/hbase/src/main/java/com/oreilly/springdata/hadoop/hbase/UserRepository.java#
+ * https://www.programcreek.com/java-api-examples/index.php?source_dir=pinpoint-master/web/src/main/java/com/navercorp/pinpoint/web/dao/hbase/HbaseMapStatisticsCallerDao.java#
+ *
+ * 
  */
 
 
@@ -78,7 +81,7 @@ public class UserRepository {
         for (String row : rows) {
             System.out.println("Printing row:" + row);
         }
-
+        return list;
     }
 
 
