@@ -2,12 +2,15 @@ package com.abin.lee.spring.data.hadoop.hbase.repository;
 
 import java.util.List;
 
+import com.abin.lee.spring.data.hadoop.hbase.common.HQuery;
 import com.abin.lee.spring.data.hadoop.hbase.model.User;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import org.apache.hadoop.hbase.client.HTableInterface;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.Table;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
@@ -56,11 +59,11 @@ public class UserRepository {
     public User save(User user) {
         return hbaseTemplate.execute(tableName, new TableCallback<User>() {
             public User doInTable(HTableInterface table) throws Throwable {
-                Put p = new Put(Bytes.toBytes(user.getName()));
-                p.add(CF_INFO, qUser, Bytes.toBytes(user.getName()));
-                p.add(CF_INFO, qEmail, Bytes.toBytes(user.getEmail()));
-                p.add(CF_INFO, qPassword, Bytes.toBytes(user.getPassword()));
-                table.put(p);
+                Put put = new Put(Bytes.toBytes(user.getName()));
+                put.addColumn(CF_INFO, qUser, Bytes.toBytes(user.getName()));
+                put.addColumn(CF_INFO, qEmail, Bytes.toBytes(user.getEmail()));
+                put.addColumn(CF_INFO, qPassword, Bytes.toBytes(user.getPassword()));
+                table.put(put);
                 return user;
 
             }
@@ -83,6 +86,155 @@ public class UserRepository {
 //        }
         return list;
     }
+
+
+    /**
+     * 通过表名和key获取一行数据
+     *
+     * @param tableName
+     * @param rowName
+     * @return
+     */
+    public <T> T get(HQuery query, Class<T> c) {
+
+        if(StringUtils.isBlank(query.getTable()) || StringUtils.isBlank(query.getRow())){
+            return null;
+        }
+
+        return this.hbaseTemplate.get(query.getTable(), query.getRow(), new RowMapper<T>() {
+            public T mapRow(Result result, int rowNum) throws Exception {
+                List<Cell> ceList = result.listCells();
+                T item=c.newInstance();
+                JSONObject obj = new JSONObject();
+                if (ceList != null && ceList.size() > 0) {
+                    for (Cell cell : ceList) {
+                        obj.put(Bytes.toString(cell.getQualifierArray(), cell.getQualifierOffset(),
+                                cell.getQualifierLength()),
+                                Bytes.toString(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength()));
+                    }
+                }else{
+                    return null;
+                }
+                item=JSON.parseObject(obj.toJSONString(), c);
+                return item;
+            }
+        });
+
+    }
+
+
+
+
+    /**
+     * 通过表名 key 和 列族 和列 获取一个数据
+     *
+     * @param tableName
+     * @param rowName
+     * @param familyName
+     * @param qualifier
+     * @return
+     */
+    public String getColumn(HQuery query) {
+
+        if(StringUtils.isBlank(query.getTable()) || StringUtils.isBlank(query.getRow())
+                || StringUtils.isBlank(query.getFamily()) || StringUtils.isBlank(query.getQualifier())){
+            return null;
+        }
+
+        return this.hbaseTemplate.get(query.getTable(), query.getRow(), query.getFamily(), query.getQualifier(), new RowMapper<String>() {
+            public String mapRow(Result result, int rowNum) throws Exception {
+                List<Cell> ceList = result.listCells();
+                String res = "";
+                if (ceList != null && ceList.size() > 0) {
+                    for (Cell cell : ceList) {
+                        res = Bytes.toString(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength());
+                    }
+                }
+                return res;
+            }
+        });
+    }
+
+    /**
+     * 通过表名，开始行键和结束行键获取数据
+     *
+     * @param HQuery
+     * @return
+     */
+    public <T> List<T> find(HQuery query,Class<T> c) {
+        //如果未设置scan,设置scan
+        if (query.getScan() == null) {
+
+            //起止搜索
+//            if(StringUtils.isNotBlank(query.getStartRow()) && StringUtils.isNotBlank(query.getStopRow())){
+//                query.setSearchLimit(query.getStartRow(), query.getStopRow());
+//            }
+
+            //主要配合pageFilter，指定起始点
+//            if(StringUtils.isNotBlank(query.getStartRow())){
+//                query.setScanStartRow(query.getStartRow());
+//            }
+
+            //列匹配搜索
+//            if(StringUtils.isNotBlank(query.getFamily()) &&StringUtils.isNotBlank(query.getQualifier())
+//                    &&StringUtils.isNotBlank(query.getQualifierValue())){
+//                query.setSearchEqualFilter(query.getFamily(),query.getQualifier(),query.getQualifierValue());
+//            }
+
+            //分页搜索
+//            if(query.getPageFilter()!=null){
+//                query.setFilters(query.getPageFilter());
+//            }
+
+            if(query.getScan()==null){
+                query.setScan(new Scan());
+            }
+        }
+
+        //设置缓存
+        query.getScan().setCacheBlocks(false);
+        query.getScan().setCaching(2000);
+
+        return this.hbaseTemplate.find(query.getTable(), query.getScan(), new RowMapper<T>() {
+            @Override
+            public T mapRow(Result result, int rowNum) throws Exception {
+
+                List<Cell> ceList = result.listCells();
+                JSONObject obj = new JSONObject();
+                T item =c.newInstance();
+                if (ceList != null && ceList.size() > 0) {
+                    for (Cell cell : ceList) {
+                        // String row = Bytes.toString(cell.getRowArray(),
+                        // cell.getRowOffset(), cell.getRowLength());
+                        // String family = Bytes.toString(cell.getFamilyArray(),
+                        // cell.getFamilyOffset(),
+                        // cell.getFamilyLength());
+
+                        String value = Bytes.toString(cell.getValueArray(), cell.getValueOffset(),
+                                cell.getValueLength());
+
+                        String quali = Bytes.toString(cell.getQualifierArray(), cell.getQualifierOffset(),
+                                cell.getQualifierLength());
+                        if(value.startsWith("[")){
+                            obj.put(quali, JSONArray.parseArray(value));
+                        }else{
+                            obj.put(quali, value);
+                        }
+                    }
+                }
+                item =JSON.parseObject(obj.toJSONString(), c);
+                return item;
+            }
+
+        });
+    }
+
+    public void delete(HQuery query){
+        this.hbaseTemplate.delete(query.getTable(), query.getRow(), query.getFamily());
+    }
+
+
+
 
 
 
