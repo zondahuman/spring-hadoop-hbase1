@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findByParam(String param) {
+        return this.userRepository.findByParam(param);
+    }
+
+    @Override
     public void update(User user) {
 
     }

@@ -17,6 +17,8 @@ public interface UserService {
 
     User findById(String id);
 
+    List<User> findByParam(String param);
+
     void update(User user);
 
     void delete(User user);

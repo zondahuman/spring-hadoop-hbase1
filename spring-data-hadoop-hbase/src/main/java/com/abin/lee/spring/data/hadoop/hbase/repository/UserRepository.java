@@ -67,20 +67,20 @@ public class UserRepository {
         });
     }
 
-    public List<User> findByParam(User user) {
+    public List<User> findByParam(String param) {
         List<User> list = Lists.newArrayList();
         // read each row from 'MyTable'
-        List<String> rows = hbaseTemplate.find("MyTable", "name",
-                new RowMapper<String>() {
-                    @Override
-                    public String mapRow(Result result, int rowNum)
-                            throws Exception {
-                        return result.toString();
-                    }
-                });
-        for (String row : rows) {
-            System.out.println("Printing row:" + row);
-        }
+//        List<User> rows = hbaseTemplate.get(tableName, "cfInfo", param, RowMapper<User>() {
+
+//                    @Override
+//                    public String mapRow(Result result, int rowNum)
+//                            throws Exception {
+//                        return result.toString();
+//                    }
+//                });
+//        for (String row : rows) {
+//            System.out.println("Printing row:" + row);
+//        }
         return list;
     }
 

@@ -48,6 +48,19 @@ public class HbaseController {
         return user;
     }
 
+    @RequestMapping("/findByParam")
+    @ResponseBody
+    public User findByParam(String param) {
+        User user = null;
+        try {
+            this.userService.findByParam(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+
     @RequestMapping("/findAll")
     @ResponseBody
     public List<User> findAll(@ModelAttribute User user) {
