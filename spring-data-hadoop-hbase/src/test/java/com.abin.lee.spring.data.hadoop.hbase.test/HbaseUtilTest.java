@@ -308,7 +308,7 @@ public class HbaseUtilTest {
         // 创建表
         String tableName = "blog2";
         String[] family = { "article", "author" };
-         creatTable(tableName, family);
+//         creatTable(tableName, family);
 
         // 为表添加数据
 
@@ -344,13 +344,13 @@ public class HbaseUtilTest {
         getResultByVersion("blog2", "rowkey1", "author", "name");
 
         // 删除一列
-        deleteColumn("blog2", "rowkey1", "author", "nickname");
+//        deleteColumn("blog2", "rowkey1", "author", "nickname");
 
         // 删除所有列
-        deleteAllColumn("blog2", "rowkey1");
+//        deleteAllColumn("blog2", "rowkey1");
 
         // 删除表
-        deleteTable("blog2");
+//        deleteTable("blog2");
 
     }
 }
